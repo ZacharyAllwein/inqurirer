@@ -2,6 +2,7 @@ const { Client, Events, GatewayIntentBits } = require("discord.js");
 const { token } = require("../config.json");
 const { isInquiry, parseOpts } = require("./text_proc");
 const R = require('rambda');
+const { toButtons} = require('./ui_build')
 
 // Create a new client instance
 const client = new Client({
@@ -26,11 +27,10 @@ client.on("messageCreate", (message) => {
   if (!isInquiry(content)) return;
 
   const opts = parseOpts(content);
-  console.log(opts);
 
   if(R.isEmpty(opts)) return;
 
-  message.channel.send(R.toString(opts));
+  message.channel.send( {'components': [toButtons(opts)]});
 });
 // Log in to Discord with your client's token
 client.login(token);
