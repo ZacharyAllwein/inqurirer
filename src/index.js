@@ -1,6 +1,7 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const { token } = require("../config.json");
 const { isInquiry, parseOpts } = require("./text_proc");
+const R = require('rambda');
 
 // Create a new client instance
 const client = new Client({
@@ -24,9 +25,12 @@ client.on("messageCreate", (message) => {
 
   if (!isInquiry(content)) return;
 
-  console.log(parseOpts(content))
+  const opts = parseOpts(content);
+  console.log(opts);
 
-  message.channel.send(parseOpts(content)?.toString());
+  if(R.isEmpty(opts)) return;
+
+  message.channel.send(R.toString(opts));
 });
 // Log in to Discord with your client's token
 client.login(token);
