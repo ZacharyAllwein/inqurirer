@@ -1,8 +1,8 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const { token } = require("../config.json");
 const { isInquiry, parseOpts } = require("./text_proc");
-const R = require('rambda');
-const { toButtons} = require('./ui_build')
+const R = require("rambda");
+const { makeButton, makeRow } = require("./ui_build");
 
 // Create a new client instance
 const client = new Client({
@@ -26,11 +26,11 @@ client.on("messageCreate", (message) => {
 
   if (!isInquiry(content)) return;
 
-  const opts = parseOpts(content);
+  const buttons = R.map(makeButton, parseOpts(content))
 
-  if(R.isEmpty(opts)) return;
+  if (R.isEmpty(buttons)) return;
 
-  message.channel.send( {'components': [toButtons(opts)]});
+  message.channel.send({ components: [makeRow(buttons)] });
 });
 // Log in to Discord with your client's token
 client.login(token);

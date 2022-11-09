@@ -1,8 +1,9 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const R = require('rambda');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const R = require("rambda");
 
-const toButtons = (l) => new ActionRowBuilder().addComponents(R.map(makeButton, l))
+const makeRow = (l) => new ActionRowBuilder().addComponents(l);
 
-const makeButton = (s) => new ButtonBuilder().setCustomId(s).setLabel(s).setStyle(ButtonStyle.Primary)
+const makeButton = (s) =>
+  new ButtonBuilder().setCustomId(s).setLabel(s).setStyle(ButtonStyle.Primary);
 
-module.exports = {toButtons, makeButton}
+module.exports = { makeRow, makeButton };
